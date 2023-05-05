@@ -1,6 +1,5 @@
 import React from 'react'
 import {Items} from '../types/Items'
-import items from '../data/items.json'
 
 interface Props {
     items: Items
