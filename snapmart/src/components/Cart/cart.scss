@@ -6,6 +6,7 @@
 
 .cart-body {
     height: 60vh;
+    overflow-y: auto;
 
     .product-image {
         display: flex;
@@ -18,6 +19,8 @@
         }
     }
     .cart-price {
+        vertical-align: middle;
+
         p {
             font-weight: 600;
             font-size: 15px;
@@ -26,5 +29,11 @@
         #price-quantity {
             height: 12px;
         }
+    }
+}
+
+.cart-footer {
+    .cart-footer-text {
+        font-weight: 700;
     }
 }

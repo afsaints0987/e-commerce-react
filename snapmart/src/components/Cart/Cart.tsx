@@ -13,6 +13,8 @@ interface CartProps {
 interface itemProps {
   cartItems: Items[];
   value?: number;
+  quantity?: number;
+  
 }
 
 const Cart: React.FC<CartProps & itemProps> = ({
@@ -22,6 +24,8 @@ const Cart: React.FC<CartProps & itemProps> = ({
   itemIncrement,
   itemDecrement,
   value,
+  quantity,
+  
 }) => {
   return (
     <div className="container p-0 bg-light vh-100">
@@ -51,7 +55,7 @@ const Cart: React.FC<CartProps & itemProps> = ({
               <div className="cart-details">
                 <h5>{item.productName}</h5>
               </div>
-              <div className="cart-price d-flex justify-content-between align-items-center mt-2">
+              <div className="cart-price d-flex justify-content-between mt-2">
                 <p>&#8369; {item.unitPrice}</p>
                 <div className="input-group input-group-sm w-50 mx-1" id="price-quantity">
                   <span
@@ -64,6 +68,7 @@ const Cart: React.FC<CartProps & itemProps> = ({
                     type="text"
                     className="form-control form-control-sm text-muted text-center"
                     value={value}
+                    onChange={(e) => e.target.value}
                   />
                   <span
                     onClick={itemIncrement}
@@ -78,9 +83,9 @@ const Cart: React.FC<CartProps & itemProps> = ({
         ))}
       </div>
       <div className="cart-footer bg-secondary px-4 py-4">
-        <div>
-          <p>Total Items:</p>
-          <p>Total Amount:</p>
+        <div className="cart-footer-text">
+          <p>Total Items: {quantity}</p>
+          <p>Total Amount: </p>
         </div>
         <button className="btn btn-success" onClick={checkout}>
           Checkout
