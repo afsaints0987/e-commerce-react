@@ -1,0 +1,37 @@
+.__products {
+    scroll-behavior: smooth;
+
+    .scrollable {
+        height: 100vh;
+        overflow-y: scroll;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+    p {
+        font-size: 12px;
+    }
+    
+    #product-text {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        text-align: justify;
+    }
+    #product-price {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+
+        p {
+            color: rgb(102, 29, 29);
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .btn {
+            width: 120px;
+        }
+    }
+}

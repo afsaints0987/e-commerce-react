@@ -1,0 +1,30 @@
+.cart-header {
+    h4 {
+        font-size: 18px;
+    }
+}
+
+.cart-body {
+    height: 60vh;
+
+    .product-image {
+        display: flex;
+        justify-content: center;
+    }
+
+    .cart-details {
+        h5 {
+            font-size: 16px;
+        }
+    }
+    .cart-price {
+        p {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        #price-quantity {
+            height: 12px;
+        }
+    }
+}
