@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Items } from "../../types/Items";
 import './productItem.scss'
 
@@ -9,6 +9,30 @@ interface Props {
 
 
 const ProductItems: React.FC<Props> = ({ products, handleAddItem }) => {
+  const [searchQuery, setSearchQuery ] = useState<string>("")
+  const [sortOrder, setSortOrder] = useState("highToLow")
+  const [sortedProducts, setSortedProducts] = useState<Items[]>([])
+
+  const filteredProducts = products.filter(
+    (product) =>
+      product.productName?.toLowerCase().includes(searchQuery.toLowerCase()) 
+  );
+
+  const sortProducts = (order: string) => {
+    setSortOrder(order);
+
+    const sorted = products.sort((a: Items, b: Items) => {
+      if (order === "highToLow") {
+        return b.unitPrice - a.unitPrice;
+      } else {
+        return a.unitPrice - b.unitPrice;
+      }
+    });
+
+    setSortedProducts([...sorted]);
+  };
+
+  sortedProducts.length > 0 ? sortedProducts : products;
 
   return (
     <div className="container __products">
@@ -17,16 +41,17 @@ const ProductItems: React.FC<Props> = ({ products, handleAddItem }) => {
         type="text"
         id="searchbar"
         placeholder="Search Item..."
+        onChange={(e)=> setSearchQuery(e.target.value)}
       />
       <div className="form-group d-flex justify-content-end flex-row align-items-center">
         <label htmlFor="sort">Sort:</label>
-        <select className="form-select-sm m-2" name="sort">
-          <option>high to low</option>
-          <option>low to high</option>
+        <select className="form-select-sm m-2" name="sort" onChange={(e) => sortProducts(e.target.value)} value={sortOrder}>
+          <option value="highToLow">high to low</option>
+          <option value="lowToHigh">low to high</option>
         </select>
       </div>
       <div className="scrollable">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <div
             key={product.id}
             className="container bg-light d-flex flex-row align-items-center px-4 my-3"

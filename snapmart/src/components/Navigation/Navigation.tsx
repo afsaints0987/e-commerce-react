@@ -7,7 +7,7 @@ const Navigation: React.FC = () => {
       <nav className="navbar navbar-expand-lg bg-success text-light">
         <div id="logo">
           <h4>
-            Snap<span className="text-warning">Mart</span> Online Shopping
+            Cool<span className="text-warning">Mart</span> Online Shopping
           </h4>
         </div>
       </nav>
