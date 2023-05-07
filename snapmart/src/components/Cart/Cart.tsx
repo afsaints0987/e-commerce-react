@@ -8,7 +8,8 @@ interface CartProps {
   checkout: () => void;
   itemIncrement: (item: Items, quantity: number) => void;
   itemDecrement: (item: Items, quantity: number) => void;
-
+  deleteItem: (item: Items) => void;
+  
 }
 
 interface itemProps {
@@ -24,7 +25,9 @@ const Cart: React.FC<CartProps & itemProps> = ({
   itemIncrement,
   itemDecrement,
   quantity,
-  priceItem
+  priceItem,
+  deleteItem
+  
 }) => {
 
   return (
@@ -43,6 +46,14 @@ const Cart: React.FC<CartProps & itemProps> = ({
             key={item.id}
             className="d-flex align-items-center cart-item p-3 border-bottom"
           >
+            <span
+              data-target-id={item.id}
+              id="deleteItem"
+              className="bg-danger rounded-circle"
+              onClick={() => deleteItem(item)}
+            >
+              x
+            </span>
             <img
               src={item.imageUrl}
               alt={item.productName}
@@ -62,19 +73,19 @@ const Cart: React.FC<CartProps & itemProps> = ({
                   id="price-quantity"
                 >
                   <span
-                    onClick={() => itemDecrement}
+                    onClick={() => itemDecrement(item, 1)}
                     className="btn btn-light border border-secondary rounded-start p-1"
                   >
                     -
                   </span>
                   <input
                     type="text"
+                    min="1"
                     value={item.quantity}
-                    onChange={(e) => e.target.value}
                     className="form-control form-control-sm text-muted text-center"
                   />
                   <span
-                    onClick={() => itemIncrement}
+                    onClick={() => itemIncrement(item, 1)}
                     className="btn btn-light border border-secondary rounded-end p-1"
                   >
                     +
@@ -85,15 +96,17 @@ const Cart: React.FC<CartProps & itemProps> = ({
           </div>
         ))}
       </div>
-        <div className="cart-footer bg-light px-4 py-4">
-          <div className="cart-footer-text">
-            <p>Total Items: {quantity}</p>
-            <p className="text-danger">Total Amount: &#8369;{priceItem.toFixed(2)}</p>
-          </div>
-          <button className="btn btn-success" onClick={checkout}>
-            Checkout
-          </button>
+      <div className="cart-footer bg-light px-4 py-4">
+        <div className="cart-footer-text">
+          <p>Total Items: {quantity}</p>
+          <p className="text-danger">
+            Total Amount: &#8369;{priceItem.toFixed(2)}
+          </p>
         </div>
+        <button className="btn btn-success" onClick={checkout}>
+          Checkout
+        </button>
+      </div>
     </div>
   );
 };
