@@ -5,7 +5,7 @@ Create a local directory on your computer using the following command:
 
 <code>mkdir test-folder</code>
 
-Copy the link to the app from GitHub and use the following command to clone it onto your local computer:
+Copy the link to the app from GitHub and use the following command to clone it onto your local directory:
 
 <code>git clone [paste link here]</code>
 
