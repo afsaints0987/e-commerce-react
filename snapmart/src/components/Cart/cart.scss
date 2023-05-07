@@ -8,6 +8,21 @@
     height: 60vh;
     overflow-y: auto;
 
+    #deleteItem {
+        position: relative;
+        display: block;
+        color: #fff;
+        width: 15px;
+        height: 15px;
+        text-align: center;
+        font-size: 10px;
+        bottom: 30px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
     .product-image {
         display: flex;
         justify-content: center;
