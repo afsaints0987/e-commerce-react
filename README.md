@@ -1,5 +1,6 @@
 # e-commerce-react
 
+
 Create a local directory on your computer using the following command:
 <code>mkdir test-folder</code>
 
@@ -13,4 +14,5 @@ Install all necessary dependencies by running the following command:
 <code>npm install</code>
 
 Once all the dependencies are installed, run the app with the following command:
+
 <code>npm run dev</code>
