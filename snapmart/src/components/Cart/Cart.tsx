@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import "./cart.scss";
 import * as FaIcons from "react-icons/fa";
 import { Items } from "../../types/Items";
@@ -6,15 +6,15 @@ import { Items } from "../../types/Items";
 interface CartProps {
   clearCart: () => void;
   checkout: () => void;
-  itemIncrement: () => void;
-  itemDecrement: () => void;
+  itemIncrement: (item: Items, quantity: number) => void;
+  itemDecrement: (item: Items, quantity: number) => void;
+
 }
 
 interface itemProps {
   cartItems: Items[];
-  value?: number;
-  quantity?: number;
-  
+  quantity: number;
+  priceItem: number;
 }
 
 const Cart: React.FC<CartProps & itemProps> = ({
@@ -23,10 +23,10 @@ const Cart: React.FC<CartProps & itemProps> = ({
   checkout,
   itemIncrement,
   itemDecrement,
-  value,
   quantity,
-  
+  priceItem
 }) => {
+
   return (
     <div className="container p-0 bg-light vh-100">
       <div className="d-flex justify-content-between cart-header bg-secondary px-4 py-3">
@@ -57,21 +57,24 @@ const Cart: React.FC<CartProps & itemProps> = ({
               </div>
               <div className="cart-price d-flex justify-content-between mt-2">
                 <p>&#8369; {item.unitPrice}</p>
-                <div className="input-group input-group-sm w-50 mx-1" id="price-quantity">
+                <div
+                  className="input-group input-group-sm w-50 mx-1"
+                  id="price-quantity"
+                >
                   <span
-                    onClick={itemDecrement}
+                    onClick={() => itemDecrement}
                     className="btn btn-light border border-secondary rounded-start p-1"
                   >
                     -
                   </span>
                   <input
                     type="text"
-                    className="form-control form-control-sm text-muted text-center"
-                    value={value}
+                    value={item.quantity}
                     onChange={(e) => e.target.value}
+                    className="form-control form-control-sm text-muted text-center"
                   />
                   <span
-                    onClick={itemIncrement}
+                    onClick={() => itemIncrement}
                     className="btn btn-light border border-secondary rounded-end p-1"
                   >
                     +
@@ -82,15 +85,15 @@ const Cart: React.FC<CartProps & itemProps> = ({
           </div>
         ))}
       </div>
-      <div className="cart-footer bg-secondary px-4 py-4">
-        <div className="cart-footer-text">
-          <p>Total Items: {quantity}</p>
-          <p>Total Amount: </p>
+        <div className="cart-footer bg-light px-4 py-4">
+          <div className="cart-footer-text">
+            <p>Total Items: {quantity}</p>
+            <p className="text-danger">Total Amount: &#8369;{priceItem.toFixed(2)}</p>
+          </div>
+          <button className="btn btn-success" onClick={checkout}>
+            Checkout
+          </button>
         </div>
-        <button className="btn btn-success" onClick={checkout}>
-          Checkout
-        </button>
-      </div>
     </div>
   );
 };

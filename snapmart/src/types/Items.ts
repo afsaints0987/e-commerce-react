@@ -5,4 +5,5 @@ export interface Items {
   unitPrice: number;
   category?: string;
   imageUrl?: string;
+  quantity?: number;
 }

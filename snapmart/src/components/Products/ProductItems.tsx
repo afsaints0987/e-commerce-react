@@ -4,7 +4,7 @@ import './productItem.scss'
 
 interface Props {
   products: Items[];
-  handleAddItem: (item: any) => void;
+  handleAddItem: (item: Items, quantity: number) => void;
 }
 
 
@@ -75,7 +75,7 @@ const ProductItems: React.FC<Props> = ({ products, handleAddItem }) => {
               <p>&#8369;{product.unitPrice}</p>
               <button
                 className="btn btn-sm btn-success"
-                onClick={() => handleAddItem(product)}
+                onClick={() => handleAddItem(product, 1)}
               >
                 Add to Cart
               </button>
