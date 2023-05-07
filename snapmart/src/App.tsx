@@ -27,16 +27,30 @@ const CheckoutModal = (props: any) => {
 }
 
 
-
 const App: React.FC = () => {
   const [productList, setProductList] = useState<Items[]>(items)
-  const [cartItems, setCartItems] = useState<Items[]>([])
+  const [cartItems, setCartItems] = useState<Items[]>(items)
   const [showModal, setShowModal] = useState<boolean>(false)
-  const [count, setCount] = useState<number>(0)
   
-  const handleAddToCart = (item: Items) => {
-    setCartItems(prevItem => [item, ...prevItem])
-  }
+ const handleAddToCart = (item: Items, quantity: number) => {
+   const cartItemIndex = cartItems.findIndex(
+     (cartItem) => cartItem.id === item.id
+   );
+
+   if (cartItemIndex === -1) {
+     const cartItem = {
+       ...item,
+       quantity: quantity,
+       totalPrice: item.unitPrice * quantity,
+     };
+     setCartItems((prevItems) => {
+       const updatedCartItems = [cartItem, ...prevItems];
+       localStorage.setItem("cart-items", JSON.stringify(updatedCartItems));
+       return updatedCartItems;
+     });
+   }
+ };
+
   const handleCategoryList = (item?: string) => {
     const ProductsByCategory = items.filter(product => product.category === item) 
     setProductList(ProductsByCategory)
@@ -46,28 +60,62 @@ const App: React.FC = () => {
     setShowModal(true)
     setTimeout(() => {
       setShowModal(false)
-      console.log('clear cart')
+      clearCart()
     },3000)
   }
+
+  const handleIncrement = () => {
+    console.log('this is increment')
+  };
+
+  const handleDecrement = () => {
+    console.log('this is decrement')
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem('cart-items')
+  }
+
+  const cartItemPrice = cartItems.map(cart => {
+    return Number(cart.unitPrice);
+  }) 
+
+  useEffect(() => {
+    const cartItems = JSON.parse(localStorage.getItem('cart-items') || '[]')
+    setCartItems(cartItems)
+  },[])
+
   
   return (
     <div>
       <Navigation />
-      <Row >
+      <Row>
         <Col lg={2}>
-          <Category categories={items} handleCategory={handleCategoryList}/>
+          <Category categories={items} handleCategory={handleCategoryList} />
         </Col>
         <Col lg={6}>
-          <ProductItems products={productList} handleAddItem={handleAddToCart}/>
+          <ProductItems
+            products={productList}
+            handleAddItem={handleAddToCart}
+          />
         </Col>
         <Col lg={4}>
-          <Cart cartItems={cartItems} 
-          checkout={handleModal} itemDecrement={() => setCount(count - 1)} itemIncrement={() => setCount(count + 1)} clearCart={() => console.log('clear cart')} value={count}
-          quantity={cartItems.length}
+          <Cart
+            cartItems={cartItems}
+            checkout={handleModal}
+            itemDecrement={handleIncrement}
+            itemIncrement={handleDecrement}
+            clearCart={() => clearCart()}
+            quantity={cartItems.length}
+            priceItem={cartItemPrice.reduce(
+              (total, price) => total + price,
+              0
+            )}
           />
         </Col>
       </Row>
-      <CheckoutModal show={showModal}/>
+      <CheckoutModal show={showModal} />
     </div>
   );
 };
