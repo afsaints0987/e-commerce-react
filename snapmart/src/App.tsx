@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import Navigation from "./components/Navigation/Navigation";
 import ProductItems from "./components/Products/ProductItems";
@@ -40,7 +41,7 @@ const App: React.FC = () => {
       const cartItem = {
         ...item,
         quantity: quantity,
-        totalPrice: item.unitPrice * quantity,
+        totalPrice: item?.unitPrice * quantity,
       };
       setCartItems((prevItems) => {
         const updatedCartItems = [cartItem, ...prevItems];
@@ -52,8 +53,9 @@ const App: React.FC = () => {
         if (cartItem.id === item.id) {
           return {
             ...cartItem,
-            quantity: cartItem.quantity + quantity,
-            totalPrice: (cartItem.quantity + quantity) * cartItem.unitPrice,
+            quantity: (cartItem?.quantity || 0) + quantity,
+            totalPrice:
+              ((cartItem?.quantity || 0) + quantity) * cartItem.unitPrice,
           };
         }
         return cartItem;
@@ -92,8 +94,9 @@ const App: React.FC = () => {
 
   
   const totalPrice = cartItems.reduce((total, item) => {
-    return total + Number(item.unitPrice) * Number(item.quantity);
+    return total + (item?.unitPrice || 0) * (item?.quantity || 0);
   }, 0);
+
 
   const totalQuantity = cartItems.reduce((total, item) => {
     return total + Number(item.quantity);
@@ -103,7 +106,7 @@ const App: React.FC = () => {
   const handleIncrement = (item: Items, quantity: number) => {
     const updatedCartItems = cartItems.map((cartItem) => {
       if (cartItem.id === item.id) {
-        const updatedQuantity = cartItem.quantity + quantity;
+        const updatedQuantity = (cartItem?.quantity || 0) + quantity;
         const updatedTotalPrice = updatedQuantity * cartItem.unitPrice;
         return {
           ...cartItem,
@@ -118,27 +121,33 @@ const App: React.FC = () => {
   };
 
   const handleDecrement = (item: Items, quantity: number) => {
-    const updatedCartItems = cartItems
-      .map((cartItem) => {
-        if (cartItem.id === item.id) {
-          const updatedQuantity = cartItem.quantity - quantity;
-          if (updatedQuantity <= 0) {
-            return null;
-          } else {
-            const updatedTotalPrice = updatedQuantity * cartItem.unitPrice;
-            return {
-              ...cartItem,
-              quantity: updatedQuantity,
-              totalPrice: updatedTotalPrice,
-            };
-          }
+    const updatedCartItems = cartItems.map((cartItem) => {
+      if (cartItem.id === item.id) {
+        const updatedQuantity = (cartItem?.quantity || 0) - quantity;
+        if (updatedQuantity <= 0) {
+          return null;
+        } else {
+          const updatedTotalPrice = updatedQuantity * cartItem.unitPrice;
+          return {
+            ...cartItem,
+            quantity: updatedQuantity,
+            totalPrice: updatedTotalPrice,
+          };
         }
-        return cartItem;
-      })
-      .filter((item) => item !== null);
-    setCartItems(updatedCartItems);
-    localStorage.setItem("cart-items", JSON.stringify(updatedCartItems));
+      }
+      return cartItem;
+    });
+
+    // Filter out null values before updating the state and cast to Items[]
+    const filteredCartItems = updatedCartItems.filter(
+      (item) => item !== null
+    ) as Items[];
+
+    setCartItems(filteredCartItems);
+    localStorage.setItem("cart-items", JSON.stringify(filteredCartItems));
   };
+
+
 
   useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("cart-items") || "[]");
