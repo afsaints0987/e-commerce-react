@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React from "react";
 import "./cart.scss";
 import * as FaIcons from "react-icons/fa";
 import { Items } from "../../types/Items";
